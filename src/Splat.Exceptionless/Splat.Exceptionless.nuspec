@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Splat.Exceptionless</id>
+    <version>$version$</version>
+    <title>Splat NLog</title>
+    <authors>dhgmssolutions dpvreony</authors>
+    <owners>dhgmssolutions dpvreony</owners>
+    <licenseUrl>https://raw.githubusercontent.com/DHGMS-Solutions/splatexceptionless/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/DHGMS-Solutions/splatexceptionless</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Exceptionless integrations for Splat</description>
+    <copyright>Copyright belongs to respective package owners</copyright>
+    <tags>NLog Splat</tags>
+    <dependencies>
+      <dependency id="splat" version="1.6.2" />
+      <dependency id="exceptionless" version="3.3.1554" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\splat.exceptionless.dll" target="lib\net45" />
+    <file src="license" />
+  </files>
+</package>
