@@ -1,14 +1,10 @@
-﻿namespace Splat.NLog
+﻿namespace Splat.Exceptionless
 {
     public static class Helpers
     {
-        public static void UseLog4Net()
+        public static void UseExceptionless()
         {
-            var funcLogManager = new FuncLogManager(type =>
-            {
-                var actualLogger = global::NLog.LogManager.GetLogger(type.ToString());
-                return new NLogSplatLogger(actualLogger);
-            });
+            var funcLogManager = new FuncLogManager(type => new ExceptionlessSplatLogger(type));
 
             Locator.CurrentMutable.RegisterConstant(funcLogManager, typeof(ILogManager));
         }

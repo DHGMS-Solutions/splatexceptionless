@@ -3,7 +3,7 @@
   <metadata>
     <id>Splat.Exceptionless</id>
     <version>$version$</version>
-    <title>Splat NLog</title>
+    <title>Splat Exceptionless</title>
     <authors>dhgmssolutions dpvreony</authors>
     <owners>dhgmssolutions dpvreony</owners>
     <licenseUrl>https://raw.githubusercontent.com/DHGMS-Solutions/splatexceptionless/master/LICENSE</licenseUrl>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Exceptionless integrations for Splat</description>
     <copyright>Copyright belongs to respective package owners</copyright>
-    <tags>NLog Splat</tags>
+    <tags>Exceptionless Splat</tags>
     <dependencies>
       <dependency id="splat" version="1.6.2" />
       <dependency id="exceptionless" version="3.3.1554" />

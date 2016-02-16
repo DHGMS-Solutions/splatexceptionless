@@ -15,17 +15,6 @@ namespace Splat.Exceptionless
     [DebuggerDisplay("Name={SourceType} Level={Level}")]
     internal sealed class ExceptionlessSplatLogger : IFullLogger
     {
-        private MethodInfo _debugFp;
-        private MethodInfo _fatalNoFp;
-        private MethodInfo _infoNoFp;
-        private MethodInfo _infoFp;
-        private MethodInfo _debugNoFp;
-        private MethodInfo _fatalFp;
-        private MethodInfo _warnFp;
-        private MethodInfo _warnNoFp;
-        private MethodInfo _errorFp;
-        private MethodInfo _errorNoFp;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionlessSplatLogger"/> class.
         /// </summary>
@@ -93,18 +82,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Debug(IFormatProvider formatProvider, String message, params Object[] args)
         {
-            if (this._debugFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._debugFp = this._inner.GetType().GetMethod("Debug", new[] { typeof(IFormatProvider), typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 2];
-            innerArgs[0] = formatProvider;
-            innerArgs[1] = message;
-            Array.Copy(args, 0, innerArgs, 2, args.Length);
-            this._debugFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(formatProvider, message, args);
+            Debug(value);
         }
 
         /// <summary>
@@ -123,17 +102,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Debug(String message, params Object[] args)
         {
-            if (this._debugNoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._debugNoFp = this._inner.GetType().GetMethod("Debug", new[] { typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 1];
-            innerArgs[0] = message;
-            Array.Copy(args, 0, innerArgs, 1, args.Length);
-            this._debugNoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(message, args);
+            Debug(value);
         }
 
         /// <summary>
@@ -145,7 +115,8 @@ namespace Splat.Exceptionless
         /// <param name="argument">The argument to log</param>
         public void Debug<TArgument>(IFormatProvider formatProvider, String message, TArgument argument)
         {
-            this._inner.Debug(formatProvider, message, argument);
+            var value = string.Format(message, new[] { argument });
+            Debug(value);
         }
 
         /// <summary>
@@ -170,7 +141,8 @@ namespace Splat.Exceptionless
         /// <param name="argument2">The second argument to log</param>
         public void Debug<TArgument1, TArgument2>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2)
         {
-            this._inner.Debug(formatProvider, message, argument1, argument2);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2 });
+            Debug(value);
         }
 
         /// <summary>
@@ -197,9 +169,15 @@ namespace Splat.Exceptionless
         /// <param name="argument1">The first argument to log</param>
         /// <param name="argument2">The second argument to log</param>
         /// <param name="argument3">The third argument to log</param>
-        public void Debug<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
+        public void Debug<TArgument1, TArgument2, TArgument3>(
+            IFormatProvider formatProvider,
+            String message,
+            TArgument1 argument1,
+            TArgument2 argument2,
+            TArgument3 argument3)
         {
-            this._inner.Debug(formatProvider, message, argument1, argument2, argument3);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2, argument3 });
+            Debug(value);
         }
 
         /// <summary>
@@ -246,18 +224,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Info(IFormatProvider formatProvider, String message, params Object[] args)
         {
-            if (this._infoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._infoFp = this._inner.GetType().GetMethod("Info", new[] { typeof(IFormatProvider), typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 2];
-            innerArgs[0] = formatProvider;
-            innerArgs[1] = message;
-            Array.Copy(args, 0, innerArgs, 2, args.Length);
-            this._infoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(formatProvider, message, args);
+            Info(value);
         }
 
         /// <summary>
@@ -276,22 +244,14 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Info(String message, params Object[] args)
         {
-            if (this._infoNoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._infoNoFp = this._inner.GetType().GetMethod("Info", new[] { typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 1];
-            innerArgs[0] = message;
-            Array.Copy(args, 0, innerArgs, 1, args.Length);
-            this._infoNoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(message, args);
+            Info(value);
         }
 
         public void Info<TArgument>(IFormatProvider formatProvider, String message, TArgument argument)
         {
-            this._inner.Info(formatProvider, message, argument);
+            var value = string.Format(formatProvider, message, new[] { argument });
+            Debug(value);
         }
 
         /// <summary>
@@ -316,7 +276,8 @@ namespace Splat.Exceptionless
         /// <param name="argument2">The second argument to log</param>
         public void Info<TArgument1, TArgument2>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2)
         {
-            this._inner.Info(formatProvider, message, argument1, argument2);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2 });
+            Info(value);
         }
 
         /// <summary>
@@ -345,7 +306,8 @@ namespace Splat.Exceptionless
         /// <param name="argument3">The third argument to log</param>
         public void Info<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
         {
-            this._inner.Info(formatProvider, message, argument1, argument2, argument3);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2, argument3 });
+            Info(value);
         }
 
         /// <summary>
@@ -392,18 +354,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Warn(IFormatProvider formatProvider, String message, params Object[] args)
         {
-            if (this._warnFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._warnFp = this._inner.GetType().GetMethod("Warn", new[] { typeof(IFormatProvider), typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 2];
-            innerArgs[0] = formatProvider;
-            innerArgs[1] = message;
-            Array.Copy(args, 0, innerArgs, 2, args.Length);
-            this._warnFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(formatProvider, message, args);
+            Warn(value);
         }
 
         /// <summary>
@@ -422,17 +374,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Warn(String message, params Object[] args)
         {
-            if (this._warnNoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._warnNoFp = this._inner.GetType().GetMethod("Warn", new[] { typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 1];
-            innerArgs[0] = message;
-            Array.Copy(args, 0, innerArgs, 1, args.Length);
-            this._warnNoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(message, args);
+            Warn(value);
         }
 
         /// <summary>
@@ -444,7 +387,8 @@ namespace Splat.Exceptionless
         /// <param name="argument">The argument to log</param>
         public void Warn<TArgument>(IFormatProvider formatProvider, String message, TArgument argument)
         {
-            this._inner.Warn(formatProvider, message, argument);
+            var value = string.Format(formatProvider, message, new object[] { argument });
+            Info(value);
         }
 
         /// <summary>
@@ -469,7 +413,8 @@ namespace Splat.Exceptionless
         /// <param name="argument2">The second argument to log</param>
         public void Warn<TArgument1, TArgument2>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2)
         {
-            this._inner.Warn(formatProvider, message, argument1, argument2);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2 });
+            Warn(value);
         }
 
         /// <summary>
@@ -498,7 +443,8 @@ namespace Splat.Exceptionless
         /// <param name="argument3">The third argument to log</param>
         public void Warn<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
         {
-            this._inner.Warn(formatProvider, message, argument1, argument2, argument3);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2, argument3 });
+            Warn(value);
         }
 
         /// <summary>
@@ -545,18 +491,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Error(IFormatProvider formatProvider, String message, params Object[] args)
         {
-            if (this._errorFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._errorFp = this._inner.GetType().GetMethod("Error", new[] { typeof(IFormatProvider), typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 2];
-            innerArgs[0] = formatProvider;
-            innerArgs[1] = message;
-            Array.Copy(args, 0, innerArgs, 2, args.Length);
-            this._errorFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(formatProvider, message, args);
+            Error(value);
         }
 
         /// <summary>
@@ -575,17 +511,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Error(String message, params Object[] args)
         {
-            if (this._errorNoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._errorNoFp = this._inner.GetType().GetMethod("Error", new[] { typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 1];
-            innerArgs[0] = message;
-            Array.Copy(args, 0, innerArgs, 1, args.Length);
-            this._errorNoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(message, args);
+            Error(value);
         }
 
         /// <summary>
@@ -597,7 +524,8 @@ namespace Splat.Exceptionless
         /// <param name="argument">The argument to log</param>
         public void Error<TArgument>(IFormatProvider formatProvider, String message, TArgument argument)
         {
-            this._inner.Error(formatProvider, message, argument);
+            var value = string.Format(formatProvider, message, new object[] { argument });
+            Error(value);
         }
 
         /// <summary>
@@ -622,7 +550,8 @@ namespace Splat.Exceptionless
         /// <param name="argument2">The second argument to log</param>
         public void Error<TArgument1, TArgument2>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2)
         {
-            this._inner.Error(formatProvider, message, argument1, argument2);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2 });
+            Error(value);
         }
 
         /// <summary>
@@ -651,7 +580,8 @@ namespace Splat.Exceptionless
         /// <param name="argument3">The third argument to log</param>
         public void Error<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
         {
-            this._inner.Error(formatProvider, message, argument1, argument2, argument3);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2, argument3 });
+            Error(value);
         }
 
         /// <summary>
@@ -698,18 +628,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Fatal(IFormatProvider formatProvider, String message, params Object[] args)
         {
-            if (this._fatalFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._fatalFp = this._inner.GetType().GetMethod("Fatal", new[] { typeof(IFormatProvider), typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 2];
-            innerArgs[0] = formatProvider;
-            innerArgs[1] = message;
-            Array.Copy(args, 0, innerArgs, 2, args.Length);
-            this._fatalFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(formatProvider, message, args);
+            Fatal(value);
         }
 
         /// <summary>
@@ -728,17 +648,8 @@ namespace Splat.Exceptionless
         /// <param name="args">The argument array to log</param>
         public void Fatal(String message, params Object[] args)
         {
-            if (this._fatalNoFp == null)
-            {
-#pragma warning disable CC0021 // Use nameof
-                this._fatalNoFp = this._inner.GetType().GetMethod("Fatal", new[] { typeof(String), typeof(Object[]) });
-#pragma warning restore CC0021 // Use nameof
-            }
-
-            var innerArgs = new Object[args.Length + 1];
-            innerArgs[0] = message;
-            Array.Copy(args, 0, innerArgs, 1, args.Length);
-            this._fatalNoFp.Invoke(this._inner, innerArgs);
+            var value = string.Format(message, args);
+            Fatal(value);
         }
 
         /// <summary>
@@ -750,7 +661,8 @@ namespace Splat.Exceptionless
         /// <param name="argument">The argument to log</param>
         public void Fatal<TArgument>(IFormatProvider formatProvider, String message, TArgument argument)
         {
-            this._inner.Fatal(formatProvider, message, argument);
+            var value = string.Format(formatProvider, message, new object[] { argument });
+            Fatal(value);
         }
 
         /// <summary>
@@ -775,7 +687,8 @@ namespace Splat.Exceptionless
         /// <param name="argument2">The second argument to log</param>
         public void Fatal<TArgument1, TArgument2>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2)
         {
-            this._inner.Fatal(formatProvider, message, argument1, argument2);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2 });
+            Fatal(value);
         }
 
         /// <summary>
@@ -804,7 +717,8 @@ namespace Splat.Exceptionless
         /// <param name="argument3">The third argument to log</param>
         public void Fatal<TArgument1, TArgument2, TArgument3>(IFormatProvider formatProvider, String message, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3)
         {
-            this._inner.Fatal(formatProvider, message, argument1, argument2, argument3);
+            var value = string.Format(formatProvider, message, new object[] { argument1, argument2, argument3 });
+            Fatal(value);
         }
 
         /// <summary>
